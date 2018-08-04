@@ -9,24 +9,77 @@ import android.widget.Button;
 
 public class CupsActivity extends AppCompatActivity {
     private static final String TAG = "CupsActivity";
+    private Button btn1, btn2, btn3, btn4, btn5, btn6, btnCancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cups);
         Log.d(TAG, "onCreate: CupsActivity");
-
-        Button btn1 = findViewById(R.id.btn1);
+        setViewIds();
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openSetTimeActivity();
+                openSetTimeActivity(btn1.getText().toString());
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSetTimeActivity(btn2.getText().toString());
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSetTimeActivity(btn3.getText().toString());
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSetTimeActivity(btn4.getText().toString());
+            }
+        });
+
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSetTimeActivity(btn5.getText().toString());
+            }
+        });
+        btn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSetTimeActivity(btn6.getText().toString());
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                previousActivity();
             }
         });
     }
-
-    public void openSetTimeActivity(){
+    public void setViewIds(){
+        btn1 = findViewById(R.id.btn1);
+        btn2 = findViewById(R.id.btn2);
+        btn3 = findViewById(R.id.btn3);
+        btn4 = findViewById(R.id.btn4);
+        btn5 = findViewById(R.id.btn5);
+        btn6 = findViewById(R.id.btn6);
+        btnCancel = findViewById(R.id.btnCancel2);
+    }
+    public void openSetTimeActivity(String str){
         Intent intent = new Intent(this, SetTimeActivity.class);
+        intent.putExtra(str,str);
+        startActivity(intent);
+    }
+
+    public void previousActivity(){
+        Intent intent = new Intent(this,HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
