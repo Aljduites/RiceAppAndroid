@@ -12,7 +12,7 @@ import android.util.Log;
 import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment {
-    private static final String TAG = "TimePickerFragment";
+    private static final String TAG = TimePickerFragment.class.getName();
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

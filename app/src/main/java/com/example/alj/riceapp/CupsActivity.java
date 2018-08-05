@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class CupsActivity extends AppCompatActivity {
-    private static final String TAG = "CupsActivity";
+    private static final String TAG = CupsActivity.class.getName();
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btnCancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class CupsActivity extends AppCompatActivity {
             }
         });
     }
-    public void setViewIds(){
+    private void setViewIds(){
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
         btn3 = findViewById(R.id.btn3);
@@ -71,13 +71,17 @@ public class CupsActivity extends AppCompatActivity {
         btn6 = findViewById(R.id.btn6);
         btnCancel = findViewById(R.id.btnCancel2);
     }
-    public void openSetTimeActivity(String str){
+    private void openSetTimeActivity(String str){
         Intent intent = new Intent(this, SetTimeActivity.class);
-        intent.putExtra(str,str);
+        Bundle bundle = new Bundle();
+
+        bundle.putString("key",str);
+        intent.putExtras(bundle);
+
         startActivity(intent);
     }
 
-    public void previousActivity(){
+    private void previousActivity(){
         Intent intent = new Intent(this,HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

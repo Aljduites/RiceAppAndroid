@@ -8,14 +8,14 @@ import android.view.View;
 import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
-    private static final String TAG = "HomeActivity";
+    private static final String TAG = HomeActivity.class.getName();
+    private Button btn1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.d(TAG, "onCreate: HomeActivity");
-
-        Button btn1 = findViewById(R.id.btnRiceAmount);
+        setViewIds();
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -23,14 +23,20 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+    private void setViewIds(){
+        Log.d(TAG, "setViewIds: Created");
+        btn1 = findViewById(R.id.btnRiceAmount);
+    }
 
-    public void openCupActivity(){
+    private void openCupActivity(){
+        Log.d(TAG, "openCupActivity: Activity");
         Intent intent = new Intent(this, CupsActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
+        Log.d(TAG, "onBackPressed: Clicked");
         moveTaskToBack(true);
     }
 }

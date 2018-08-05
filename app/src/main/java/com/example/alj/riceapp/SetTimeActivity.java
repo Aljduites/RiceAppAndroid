@@ -12,8 +12,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class SetTimeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
-    private static final String TAG = "SetTimeActivity";
-    private Button btnSetTime, btnCancel;
+    private static final String TAG = SetTimeActivity.class.getName();
+    private Button btnSetTime, btnCancel, btnOk;
+    private String _retVal;
+    private Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,9 +24,11 @@ public class SetTimeActivity extends AppCompatActivity implements TimePickerDial
         Log.d(TAG, "onCreate: SetTimeActivity");
         setViewIds();
 
+
         btnSetTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: Clicked");
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.show(getSupportFragmentManager(), "time picker");
             }
@@ -32,17 +37,23 @@ public class SetTimeActivity extends AppCompatActivity implements TimePickerDial
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: Clicked");
                 returnCups();
             }
         });
     }
-    public void setViewIds(){
+    private void setViewIds(){
+        Log.d(TAG, "setViewIds: Clicked");
         btnSetTime = findViewById(R.id.btnTimePicker);
+        btnOk = findViewById(R.id.btnOkTime);
         btnCancel = findViewById(R.id.btnCancelTime);
+        bundle = getIntent().getExtras();
+        _retVal = bundle.getString("key");
     }
 
     @Override
     public void onTimeSet(TimePicker timePicker, int i, int i1) {
+        Log.d(TAG, "onTimeSet: Set");
         boolean isPM = (i >= 12);
         TextView lblSetTime = findViewById(R.id.lblCookSetTime);
 
@@ -52,10 +63,12 @@ public class SetTimeActivity extends AppCompatActivity implements TimePickerDial
 
     @Override
     public void onBackPressed() {
+        Log.d(TAG, "onBackPressed: Clicked");
         moveTaskToBack(true);
     }
 
-    public void returnCups(){
+    private void returnCups(){
+        Log.d(TAG, "returnCups: Clicked");
         Intent intent = new Intent(this, CupsActivity.class);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
