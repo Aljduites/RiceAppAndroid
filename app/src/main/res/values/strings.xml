@@ -22,4 +22,5 @@
     <string name="cancel">CANCEL</string>
     <string name="lblCookTime">SET COOKING TIME:</string>
     <string name="btnTimePicker">SET TIME</string>
+    <string name="stop">Stop</string>
 </resources>

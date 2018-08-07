@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
 /*    private void sendRequestAndPrintResponse() {
         req = Volley.newRequestQueue(this);
-        String url = "http://www.mocky.io/v2/5b66f4183200005000ee1204";
+        String url = "http://192.168.1.101/13/off";
         strReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         strReq.setTag(REQUESTTAG);
         req.add(strReq);
-    }
+    }*/
 
-    @Override
+/*    @Override
     protected void onStop() {
         super.onStop();
         if(req!=null) {
@@ -101,13 +101,22 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "setViewIds: Created");
         btn1 = findViewById(R.id.btnOk);
         btn2 = findViewById(R.id.btnCancel);
-/*        btnTest = findViewById(R.id.btnTest);*/
+        btnTest = findViewById(R.id.btnTest);
         editTxt1 = findViewById(R.id.txtPassword);
     }
     private void openHomeActivity(){
         Log.d(TAG, "openHomeActivity: Clicked");
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+    private void startService(View view){
+        Intent intent =  new Intent(MainActivity.this, MyService.class);
+        startService(intent);
+    }
+
+    private void stopService(View view){
+        Intent intent =  new Intent(MainActivity.this, MyService.class);
+        stopService(intent);
     }
 
     @Override
