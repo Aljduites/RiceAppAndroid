@@ -23,8 +23,10 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".MyService"
+        <service android:name=".NewService"
             android:exported="false"></service>
+        
+        <receiver android:name=".AlarmService"/>
     </application>
 
 </manifest>

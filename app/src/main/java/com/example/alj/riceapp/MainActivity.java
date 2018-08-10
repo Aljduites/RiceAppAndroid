@@ -1,8 +1,12 @@
 package com.example.alj.riceapp;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -101,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "setViewIds: Created");
         btn1 = findViewById(R.id.btnOk);
         btn2 = findViewById(R.id.btnCancel);
-        btnTest = findViewById(R.id.btnTest);
+        /*btnTest = findViewById(R.id.btnTest);*/
         editTxt1 = findViewById(R.id.txtPassword);
     }
     private void openHomeActivity(){
@@ -109,13 +113,33 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
-    private void startService(View view){
-        Intent intent =  new Intent(MainActivity.this, MyService.class);
+    public void startService(View view){
+/*        Intent intent =  new Intent(MainActivity.this, MyService.class);
+        startService(intent);*/
+        Intent intent = new Intent(MainActivity.this, NewService.class);
         startService(intent);
+
+        startAlarm(true,false);
     }
 
-    private void stopService(View view){
-        Intent intent =  new Intent(MainActivity.this, MyService.class);
+    private void startAlarm(boolean isNotification, boolean isOnTime) {
+        AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intent;
+        PendingIntent pendingIntent = null;
+
+        if(isNotification) {
+            intent = new Intent(MainActivity.this, AlarmService.class);
+            pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+        }
+
+        manager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 3000, pendingIntent);
+/*        manager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 3000, 3000, pendingIntent);*/
+    }
+
+    public void stopService(View view){
+/*        Intent intent =  new Intent(MainActivity.this, MyService.class);
+        stopService(intent);*/
+        Intent intent = new Intent(MainActivity.this, NewService.class);
         stopService(intent);
     }
 
@@ -125,3 +149,4 @@ public class MainActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 }
+

@@ -1,5 +1,6 @@
 package com.example.alj.riceapp;
 
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ public class HomeActivity extends AppCompatActivity {
                 openCupActivity();
             }
         });
+
+
     }
     private void setViewIds(){
         Log.d(TAG, "setViewIds: Created");
