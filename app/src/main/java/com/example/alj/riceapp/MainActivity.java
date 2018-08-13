@@ -1,12 +1,18 @@
 package com.example.alj.riceapp;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.os.CountDownTimer;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,6 +64,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AlarmActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
 /*        btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "setViewIds: Created");
         btn1 = findViewById(R.id.btnOk);
         btn2 = findViewById(R.id.btnCancel);
-        /*btnTest = findViewById(R.id.btnTest);*/
+        btnTest = findViewById(R.id.btnStart);
         editTxt1 = findViewById(R.id.txtPassword);
     }
     private void openHomeActivity(){
@@ -134,6 +149,39 @@ public class MainActivity extends AppCompatActivity {
 
         manager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 3000, pendingIntent);
 /*        manager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 3000, 3000, pendingIntent);*/
+    }
+
+    public void clockTime () {
+        CountDownTimer timer = new CountDownTimer(20 * 1000, 1000) {
+            @Override
+            public void onTick(long l) {
+                btnTest.setText(String.valueOf(l / 60000) + ":" + String.format("%02d", (l % 60000) / 1000));
+
+            }
+
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onFinish() {
+                btnTest.setText("0:00");
+                Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(1000);
+                Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(),
+                        RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                if(ringtone != null) {
+                    ringtone.play();
+                }
+                new AlertDialog.Builder(MainActivity.this)
+                        .setMessage("Time is up")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).show();
+
+            }
+        }.start();
+        new PowerlockService(MainActivity.this, 10);
     }
 
     public void stopService(View view){

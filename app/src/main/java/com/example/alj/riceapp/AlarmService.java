@@ -9,6 +9,9 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 public class AlarmService extends BroadcastReceiver {
+
+    public AlarmService() {}
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
