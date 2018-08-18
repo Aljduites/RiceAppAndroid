@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:inner_text="SWIPE TO LOCK"
+        app:inner_text="SWIPE TO STOP"
         app:inner_text_size="18sp"
         app:inner_text_top_padding="20dp"
         app:inner_text_bottom_padding="20dp"

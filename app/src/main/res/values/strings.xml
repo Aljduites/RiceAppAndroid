@@ -23,4 +23,5 @@
     <string name="lblCookTime">SET COOKING TIME:</string>
     <string name="btnTimePicker">SET TIME</string>
     <string name="stop">Stop</string>
+    <string name="cookTime">COOKING TIME:</string>
 </resources>

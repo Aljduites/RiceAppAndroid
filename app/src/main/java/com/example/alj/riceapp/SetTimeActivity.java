@@ -14,6 +14,7 @@ import android.widget.TimePicker;
 public class SetTimeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     private static final String TAG = SetTimeActivity.class.getName();
     private Button btnSetTime, btnCancel, btnOk;
+    private TextView lblTime;
     private String _retVal;
     private Bundle bundle;
 
@@ -47,8 +48,19 @@ public class SetTimeActivity extends AppCompatActivity implements TimePickerDial
         btnSetTime = findViewById(R.id.btnTimePicker);
         btnOk = findViewById(R.id.btnOkTime);
         btnCancel = findViewById(R.id.btnCancelTime);
+        lblTime = findViewById(R.id.lblCookSetTime);
         bundle = getIntent().getExtras();
         _retVal = bundle.getString("key");
+    }
+
+    public void startService(View view) {
+        Intent intent = new Intent(SetTimeActivity.this, NewService.class);
+        Bundle bundles = new Bundle();
+
+        bundles.putString("serviceTime",lblTime.getText().toString());
+        intent.putExtras(bundles);
+        startService(intent);
+        openHome();
     }
 
     @Override
@@ -65,6 +77,18 @@ public class SetTimeActivity extends AppCompatActivity implements TimePickerDial
     public void onBackPressed() {
         Log.d(TAG, "onBackPressed: Clicked");
         moveTaskToBack(true);
+    }
+
+    private void openHome(){
+        Log.d(TAG, "openHome: Used");
+        Intent intent = new Intent(SetTimeActivity.this, HomeActivity.class);
+        Bundle bundles = new Bundle();
+
+        bundles.putString("time",lblTime.getText().toString());
+        intent.putExtras(bundles);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void returnCups(){

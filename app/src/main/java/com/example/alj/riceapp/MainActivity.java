@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void openHomeActivity(){
         Log.d(TAG, "openHomeActivity: Clicked");
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         startActivity(intent);
     }
     public void startService(View view){

@@ -1,6 +1,12 @@
 package com.example.alj.riceapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,12 +14,16 @@ import android.util.Log;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class AlarmActivity extends AppCompatActivity {
 
     private static final String TAG = "AlarmActivity";
-    SwipeButton swipeButton;
-    
-    
+    private SwipeButton swipeButton;
+    private Timer timer;
+    Ringtone ringtone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +36,10 @@ public class AlarmActivity extends AppCompatActivity {
             public void onStateChange(boolean active) {
                 Intent intent = new Intent(AlarmActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                ringtone.stop();
+                RingtoneManager manager = new RingtoneManager(getApplicationContext());
+                manager.stopPreviousRingtone();
+                timer.cancel();
                 startActivity(intent);
             }
         });
@@ -34,6 +48,20 @@ public class AlarmActivity extends AppCompatActivity {
     private void setViewIds(){
 
         swipeButton = findViewById(R.id.btnSwipe);
+        Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(1000);
+        ringtone = RingtoneManager.getRingtone(getApplicationContext(),
+            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
+        timer = new Timer();
+        if(ringtone != null) {
+            ringtone.play();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    ringtone.play();
+                }
+            }, 1000*1, 1000*1);
+        }
     }
 
     @Override
