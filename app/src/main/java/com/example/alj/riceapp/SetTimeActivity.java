@@ -1,6 +1,8 @@
 package com.example.alj.riceapp;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class SetTimeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     private static final String TAG = SetTimeActivity.class.getName();
@@ -17,6 +20,8 @@ public class SetTimeActivity extends AppCompatActivity implements TimePickerDial
     private TextView lblTime;
     private String _retVal;
     private Bundle bundle;
+    private AlertDialog.Builder builder1;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +30,10 @@ public class SetTimeActivity extends AppCompatActivity implements TimePickerDial
         Log.d(TAG, "onCreate: SetTimeActivity");
         setViewIds();
 
-
         btnSetTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Log.d(TAG, "onClick: Clicked");
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.show(getSupportFragmentManager(), "time picker");
@@ -42,6 +47,37 @@ public class SetTimeActivity extends AppCompatActivity implements TimePickerDial
                 returnCups();
             }
         });
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                builder1.setMessage("Are you sure?");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startService();
+                    }
+                });
+
+                builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                if(lblTime.getText().toString().isEmpty()) {
+                    Toast.makeText(SetTimeActivity.this, "Please set cook time.", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    alertDialog = builder1.create();
+                    alertDialog.show();
+                }
+
+            }
+        });
     }
     private void setViewIds(){
         Log.d(TAG, "setViewIds: Clicked");
@@ -51,9 +87,12 @@ public class SetTimeActivity extends AppCompatActivity implements TimePickerDial
         lblTime = findViewById(R.id.lblCookSetTime);
         bundle = getIntent().getExtras();
         _retVal = bundle.getString("key");
+        builder1 = new AlertDialog.Builder(SetTimeActivity.this);
+
     }
 
-    public void startService(View view) {
+    /*public void startService(View view) {*/
+    public void startService() {
         Intent intent = new Intent(SetTimeActivity.this, NewService.class);
         Bundle bundles = new Bundle();
 

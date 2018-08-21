@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.os.CountDownTimer;
@@ -29,6 +30,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
     private static final String REQUESTTAG = "string request first";
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Clicked");
                 if(editTxt1.getText().toString().toUpperCase().equals("TESTING")) {
+                    SharedPreferences.Editor editor = getSharedPreferences("MyPrefs", MODE_PRIVATE).edit();
+                    editor.putString("Key_Password", "TESTING");
+                    editor.putLong("ExpiredTime", System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(5));
+                    editor.apply();
                     openHomeActivity();
                 }
                 else {
@@ -120,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "setViewIds: Created");
         btn1 = findViewById(R.id.btnOk);
         btn2 = findViewById(R.id.btnCancel);
-        btnTest = findViewById(R.id.btnStart);
+        /*btnTest = findViewById(R.id.btnStart);*/
         editTxt1 = findViewById(R.id.txtPassword);
     }
     private void openHomeActivity(){

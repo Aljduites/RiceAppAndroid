@@ -25,12 +25,12 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="25sp" />
 
-    <Button
+    <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/ok"
         android:id="@+id/btnStart"
-        />
+        />-->
         <!--android:onClick="startService"-->
     <!--<Button
         android:layout_width="wrap_content"

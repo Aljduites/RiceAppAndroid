@@ -16,7 +16,8 @@
         android:gravity="center"
         android:textSize="35sp"
         android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +26,8 @@
         android:id="@+id/lblCookSetTime"
         android:gravity="center"
         android:textStyle="bold"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="@color/colorPrimaryDark"
+        android:background="@color/colorLabel"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,9 +49,8 @@
             android:padding="20dp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/ok"
-            android:onClick="startService"
-            />
+            android:text="@string/ok" />
+            <!--android:onClick="startService"-->
         <Button
             android:id="@+id/btnCancelTime"
             android:layout_height="wrap_content"
