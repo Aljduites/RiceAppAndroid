@@ -1,11 +1,10 @@
 package com.example.alj.riceapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,15 +21,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.NoConnectionError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+
+import org.mozilla.javascript.tools.jsc.Main;
 
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
@@ -39,11 +41,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTxt1;
     private RequestQueue req;
     private StringRequest strReq;
+    private OkHttpClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setViewIds();
+
+
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,9 +80,8 @@ public class MainActivity extends AppCompatActivity {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AlarmActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                startWebSocket();
+
             }
         });
 
@@ -127,9 +132,37 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "setViewIds: Created");
         btn1 = findViewById(R.id.btnOk);
         btn2 = findViewById(R.id.btnCancel);
-        /*btnTest = findViewById(R.id.btnStart);*/
+        btnTest = findViewById(R.id.btnStart);
         editTxt1 = findViewById(R.id.txtPassword);
+        client = new OkHttpClient();
     }
+    private void startWebSocket(){
+        Request request = new Request.Builder().url("ws://app.remoteme.org/arLite/~XFt2FmYgf3dxKTdZpb3CuCZJRTq4Z55FkNSJwQwFry1A64iEvchIs3WTKXezEFh4j/ws/v1/1001/").build();
+        EchoWebSocketListener listener = new EchoWebSocketListener();
+        WebSocket ws = client.newWebSocket(request, listener);
+
+        client.dispatcher().executorService().shutdown();
+    }
+    private final class EchoWebSocketListener extends WebSocketListener {
+
+        private static final int NORMAL_STATUS_CLOSURE = 1000;
+
+        @Override
+        public void onOpen(WebSocket webSocket, Response response) {
+            Toast.makeText(MainActivity.this, "It opened", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onMessage(WebSocket webSocket, String text) {
+            super.onMessage(webSocket, text);
+        }
+
+        @Override
+        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+            Toast.makeText(MainActivity.this, "It failed", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void openHomeActivity(){
         Log.d(TAG, "openHomeActivity: Clicked");
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
@@ -145,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startAlarm(boolean isNotification, boolean isOnTime) {
-        AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        AlarmManager manager = (AlarmManager)getSystemService(android.content.Context.ALARM_SERVICE);
         Intent intent;
         PendingIntent pendingIntent = null;
 
@@ -170,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 btnTest.setText("0:00");
-                Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                Vibrator vibrator = (Vibrator)getSystemService(android.content.Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(1000);
                 Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(),
                         RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));

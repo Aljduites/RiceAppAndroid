@@ -8,7 +8,11 @@
     android:padding="20dp"
     tools:context=".MainActivity"
     android:background="@color/colorAccent">
-
+    <WebView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:id="@+id/webView1"></WebView>
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="match_parent"
@@ -25,12 +29,12 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="25sp" />
 
-    <!--<Button
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/ok"
         android:id="@+id/btnStart"
-        />-->
+        />
         <!--android:onClick="startService"-->
     <!--<Button
         android:layout_width="wrap_content"
@@ -39,7 +43,7 @@
         android:id="@+id/btnStop"/>-->
         <!--android:onClick="stopService"-->
 
-<!--    <Button
+    <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
@@ -76,5 +80,7 @@
             android:layout_marginLeft="20dp"/>
 
 
+
     </LinearLayout>
+
 </LinearLayout>
