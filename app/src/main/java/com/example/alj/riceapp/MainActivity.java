@@ -149,17 +149,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
-            Toast.makeText(MainActivity.this, "It opened", Toast.LENGTH_LONG).show();
+            /*Toast.makeText(MainActivity.this, "It opened", Toast.LENGTH_LONG).show();*/
         }
 
-        @Override
-        public void onMessage(WebSocket webSocket, String text) {
-            super.onMessage(webSocket, text);
-        }
 
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-            Toast.makeText(MainActivity.this, "It failed", Toast.LENGTH_LONG).show();
+            /*Toast.makeText(MainActivity.this, "It failed", Toast.LENGTH_LONG).show();*/
         }
     }
 
