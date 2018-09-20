@@ -26,10 +26,14 @@ import com.android.volley.toolbox.StringRequest;
 
 import org.mozilla.javascript.tools.jsc.Main;
 
+import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Call;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -37,11 +41,12 @@ import okhttp3.WebSocketListener;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
     private static final String REQUESTTAG = "string request first";
-    private Button btn1, btn2, btnTest;
+    private Button btn1, btn2, btnTest, btnOn, btnOff;
     private EditText editTxt1;
     private RequestQueue req;
     private StringRequest strReq;
     private OkHttpClient client;
+    private WebSocket ws1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startWebSocket();
 
+            }
+        });
+        btnOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                turnOn13();
+            }
+        });
+
+        btnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                turnOff13();
             }
         });
 
@@ -135,14 +153,51 @@ public class MainActivity extends AppCompatActivity {
         btnTest = findViewById(R.id.btnStart);
         editTxt1 = findViewById(R.id.txtPassword);
         client = new OkHttpClient();
+        btnOn = findViewById(R.id.btnOn);
+        btnOff = findViewById(R.id.btnOff);
     }
     private void startWebSocket(){
-        Request request = new Request.Builder().url("ws://app.remoteme.org/arLite/~XFt2FmYgf3dxKTdZpb3CuCZJRTq4Z55FkNSJwQwFry1A64iEvchIs3WTKXezEFh4j/ws/v1/1001/").build();
+
+
+        Request request = new Request.Builder()
+                .url("wss://app.remoteme.org/arLite/~XFt2FmYgf3dxKTdZpb3CuCZJRTq4Z55FkNSJwQwFry1A64iEvchIs3WTKXezEFh4j/ws/v1/1001/")
+                .build();
+
         EchoWebSocketListener listener = new EchoWebSocketListener();
         WebSocket ws = client.newWebSocket(request, listener);
 
+        ws1 = ws;
         client.dispatcher().executorService().shutdown();
     }
+    private void turnOn13() {
+        String postBody = "{\n" +
+                "\"type\" : \"VariableChangeMessage\",\n" +
+                "\"senderDeviceId\" :  1001,\n" +
+                "\"ignoreReceivers\" : [ ],\n" +
+                "\"states\" : [ \n" +
+                "{\n" +
+                "\"type\" : \"BOOLEAN\",\n" +
+                "\"name\" : \"button1\",\n" +
+                "\"data\" : true \n" +
+                "}]\n" +
+                "}";
+        ws1.send(postBody);
+    }
+    private void turnOff13() {
+        String postBody = "{\n" +
+                "\"type\" : \"VariableChangeMessage\",\n" +
+                "\"senderDeviceId\" :  1001,\n" +
+                "\"ignoreReceivers\" : [ ],\n" +
+                "\"states\" : [ \n" +
+                "{\n" +
+                "\"type\" : \"BOOLEAN\",\n" +
+                "\"name\" : \"button1\",\n" +
+                "\"data\" : false \n" +
+                "}]\n" +
+                "}";
+        ws1.send(postBody);
+    }
+
     private final class EchoWebSocketListener extends WebSocketListener {
 
         private static final int NORMAL_STATUS_CLOSURE = 1000;
@@ -150,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
             /*Toast.makeText(MainActivity.this, "It opened", Toast.LENGTH_LONG).show();*/
+
         }
 
 
